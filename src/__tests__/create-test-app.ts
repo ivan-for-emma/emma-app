@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { promisify } from 'util';
-import { Weight } from '../config';
+import { Algorithm } from '../config';
 import { createApp } from '../server';
 
 export interface TestAppContext {
@@ -10,16 +10,16 @@ export interface TestAppContext {
 
 export async function createTestApp({
   seed,
-  weights,
+  algorithm,
 }: {
   seed: number;
-  weights: Weight[];
+  algorithm: Algorithm;
 }): Promise<TestAppContext> {
   const { fastify } = createApp({
     seed,
-    weights,
+    algorithm,
   });
-  await fastify.listen(0);
+  await fastify.listen(0); // 0 means random port
 
   const address = fastify.server.address();
   if (typeof address === 'string') {

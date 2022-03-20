@@ -1,16 +1,19 @@
 import { createTestApp, TestAppContext } from './create-test-app';
 
-describe('test', () => {
+describe('basic algorithm', () => {
   let ctx: TestAppContext;
 
   beforeEach(async () => {
     ctx = await createTestApp({
       seed: 0,
-      weights: [
-        { min: 3, max: 10, weight: 95 },
-        { min: 10, max: 25, weight: 3 },
-        { min: 25, max: 200, weight: 2 },
-      ],
+      algorithm: {
+        type: 'basic',
+        weights: [
+          { min: 3, max: 10, weight: 95 },
+          { min: 10, max: 25, weight: 3 },
+          { min: 25, max: 200, weight: 2 },
+        ],
+      },
     });
   });
 
@@ -75,11 +78,11 @@ Object {
 
   async function preBuyShares(quantity: number) {
     const {
-      data: { prices },
+      data: { shares },
     } = await ctx.agent.get('/private/shares');
 
     await ctx.agent.post('/private/shares/buy', {
-      targets: prices.map(({ tickerSymbol }) => ({
+      targets: shares.map(({ tickerSymbol }) => ({
         tickerSymbol,
         quantity,
       })),
