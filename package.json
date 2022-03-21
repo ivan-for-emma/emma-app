@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "start:dev": "ts-node-dev --respawn --transpile-only src/",
+    "prebuild": "rm -rf dist",
+    "build": "tsc -p ./tsconfig.build.json",
     "test": "yarn jest",
     "test:watch": "yarn test --watch"
   },

@@ -11,6 +11,9 @@ $ cp .env.example .env
 
 ```sh
 $ yarn start:dev
+# or in docker
+$ docker build -t emma-task .
+$ docker run --rm -p 3000:3000 emma-task
 ```
 
 ## Tests
@@ -63,3 +66,4 @@ I implemented a private POST handler to run manually to buy shares.
 - Database for keeping users info and their shares
 - Something like kafka to serialize commands execution and prevent race condition (CPA)
 - Check if random implementation in `chance` library is cryptographically secure
+

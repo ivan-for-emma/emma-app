@@ -8,7 +8,8 @@
     "experimentalDecorators": true,
     "target": "esnext",
     "sourceMap": true,
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "outDir": "dist"
   },
   "exclude": ["node_modules"]
 }
