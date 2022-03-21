@@ -24,7 +24,10 @@ export function createApp({
     const { result, share } = await service.claimFreeShare(body.accountId);
 
     if (result.success) {
-      reply.send({ status: 'success', share });
+      reply.send({
+        status: 'success',
+        share: { ticker: share.tickerSymbol, price: share.sharePrice },
+      });
     } else {
       reply.status(500).send({ status: 'error', code: 'internal-error' });
     }

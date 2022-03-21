@@ -10,7 +10,10 @@ $ cp .env.example .env
 ## Usage
 
 ```sh
-$ yarn start:dev
+$ yarn start:dev # http://localhost:3000/
+# in other terminal
+$ yarn buy-shares # prepare account
+$ curl -H "Content-Type: application/json" --data '{"accountId": "1"}' http://localhost:3000/claim-free-share # receive share
 # or in docker
 $ docker build -t emma-task .
 $ docker run --rm -p 3000:3000 emma-task

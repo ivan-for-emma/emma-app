@@ -7,7 +7,8 @@
     "prebuild": "rm -rf dist",
     "build": "tsc -p ./tsconfig.build.json",
     "test": "yarn jest",
-    "test:watch": "yarn test --watch"
+    "test:watch": "yarn test --watch",
+    "buy-shares": "yarn ts-node scripts/buy-shares"
   },
   "dependencies": {
     "axios": "^0.26.1",
