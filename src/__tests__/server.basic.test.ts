@@ -1,4 +1,5 @@
 import { createTestApp, TestAppContext } from './create-test-app';
+import { groupByTicker } from './utils/group-by-ticker';
 
 describe('basic algorithm', () => {
   let ctx: TestAppContext;
@@ -26,17 +27,16 @@ describe('basic algorithm', () => {
   test('success', async () => {
     await preBuyShares(100);
 
-    const result = {};
+    const result = [];
     for (let i = 0; i < 100; i++) {
       const { data } = await ctx.agent.post('/claim-free-share', {
         accountId: `acc-${i}`,
       });
 
-      const key = `${data.share.tickerSymbol}-£${data.share.sharePrice}`;
-      result[key] = (result[key] || 0) + 1;
+      result.push(data);
     }
 
-    expect(result).toMatchInlineSnapshot(`
+    expect(groupByTicker(result)).toMatchInlineSnapshot(`
 Object {
   "AA-£5": 96,
   "CC-£10": 4,
@@ -47,7 +47,7 @@ Object {
   test('not enough available shares', async () => {
     await preBuyShares(1);
 
-    const result = {};
+    const result = [];
     let i: number;
 
     for (i = 0; i < 100; i++) {
@@ -56,15 +56,15 @@ Object {
           accountId: `acc-${i}`,
         });
 
-        const key = `${data.share.tickerSymbol}-£${data.share.sharePrice}`;
-        result[key] = (result[key] || 0) + 1;
+        result.push(data);
       } catch (err) {
         expect(err.response.data.message).toBe('no available shares');
         break;
       }
     }
 
-    expect({ result, errorIndex: i }).toMatchInlineSnapshot(`
+    expect({ result: groupByTicker(result), errorIndex: i }).
+toMatchInlineSnapshot(`
 Object {
   "errorIndex": 3,
   "result": Object {

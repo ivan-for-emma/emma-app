@@ -1,4 +1,5 @@
 import { createTestApp, TestAppContext } from './create-test-app';
+import { groupByTicker } from './utils/group-by-ticker';
 
 describe('cpa algorithm', () => {
   let ctx: TestAppContext;
@@ -31,22 +32,27 @@ describe('cpa algorithm', () => {
   test('success', async () => {
     await preBuyShares(100);
 
-    const result = {};
+    const result = [];
     const iterations = 100;
     for (let i = 0; i < iterations; i++) {
       const { data } = await ctx.agent.post('/claim-free-share', {
         accountId: `acc-${i}`,
       });
 
-      const key = `${data.share.tickerSymbol}-£${data.share.sharePrice}`;
-      result[key] = (result[key] || 0) + 1;
+      result.push(data);
     }
 
     const {
       data: { state },
     } = await ctx.agent.get('/private/cpa');
 
-    expect({ result, state, targetCPA, initialState, initialCPA, iterations }).
+    expect({
+  result: groupByTicker(result),
+  state,
+  targetCPA,
+  initialState,
+  initialCPA,
+  iterations }).
 toMatchInlineSnapshot(`
 Object {
   "initialCPA": 10,
